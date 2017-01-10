@@ -10,11 +10,14 @@ WORKDIR $HOME
 RUN npm install -g angular-cli
 
 # Sets up and installs all the node modules
-COPY . $HOME
+COPY ./package.json $HOME
 RUN npm install
+
+# Copies the application onto the image
+COPY . $HOME
 
 # Necessary ports for development
 # 4200 is the default dev server port
-# 49153 Live reload port
 EXPOSE 4200
-EXPOSE 49153
+
+CMD ["npm", "start"]
