@@ -7,7 +7,7 @@ RUN mkdir $HOME
 WORKDIR $HOME
 
 # Installs angular-cli.  We need this to run the cool ng commands
-RUN npm install -g angular-cli
+RUN npm install -g angular-cli@1.0.0-beta.24
 
 # Sets up and installs all the node modules
 COPY ./package.json $HOME
@@ -19,5 +19,6 @@ COPY . $HOME
 # Necessary ports for development
 # 4200 is the default dev server port
 EXPOSE 4200
+EXPOSE 49153
 
 CMD ["npm", "start"]
