@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { ButtonModule, ConfirmDialogModule, GrowlModule } from 'primeng/primeng';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { AppComponent } from './app.component';
 
     ButtonModule,
     ConfirmDialogModule,
-    GrowlModule
+    GrowlModule,
+
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
