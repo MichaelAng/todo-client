@@ -23,9 +23,9 @@ import { TodoModule } from './todo/todo.module';
     ConfirmDialogModule,
     GrowlModule,
 
-    AppRoutingModule,
     CoreModule,
-    TodoModule
+    TodoModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
