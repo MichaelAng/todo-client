@@ -6,9 +6,6 @@ ENV HOME=/usr/src/app
 RUN mkdir $HOME
 WORKDIR $HOME
 
-# Installs angular-cli.  We need this to run the cool ng commands
-RUN npm install -g angular-cli@1.0.0-beta.24
-
 # Sets up and installs all the node modules
 COPY ./package.json $HOME
 RUN npm install
