@@ -5,6 +5,10 @@ import { TodoListComponent }    from './todo-list/todo-list.component';
 
 const todosRoutes: Routes = [
   { path: 'todos',  component: TodoListComponent },
+  { path: 'todos1',  component: TodoListComponent },
+  { path: 'todos2',  component: TodoListComponent },
+  { path: 'todos3',  component: TodoListComponent },
+  { path: 'todos4',  component: TodoListComponent }
 ];
 
 @NgModule({
