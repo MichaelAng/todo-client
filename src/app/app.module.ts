@@ -19,10 +19,6 @@ import { TodoModule } from './todo/todo.module';
     FormsModule,
     HttpModule,
 
-    ButtonModule,
-    ConfirmDialogModule,
-    GrowlModule,
-
     CoreModule,
     TodoModule,
     AppRoutingModule
