@@ -1,8 +1,13 @@
 machine:
   services:
     - docker
+  node:
+    version: 6.8.0
 
 dependencies:
+  pre:
+    - npm install npm@latest -g # Should fix bug in ng test
+    - npm install angular-cli@1.0.0-beta.24 -g
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
 
@@ -11,6 +16,10 @@ compile:
     - pwd
     - docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .
     - docker build -f ./Dockerfile.production -t angmerica/todo-client:production .
+
+test:
+  override:
+    - npm run test
 
 deployment:
   develop:
