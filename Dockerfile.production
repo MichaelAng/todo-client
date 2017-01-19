@@ -7,7 +7,7 @@ RUN mkdir $HOME
 WORKDIR $HOME
 
 # Installs http-server to run a server
-RUN npm install --global http-server
+RUN npm install --global local-web-server
 
 # Sets up and installs all the node modules
 COPY ./package.json $HOME
@@ -19,6 +19,6 @@ COPY . $HOME
 # 80 is the default dev server port
 EXPOSE 80
 
-RUN npm run build -- --prod
+WORKDIR $HOME/dist
 
-CMD ["http-server", "./dist", "-p", "80"]
+CMD ["ws", "--spa", "index.html", "-p", "80"]
