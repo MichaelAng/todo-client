@@ -8,8 +8,8 @@ dependencies:
 
 compile:
   override:
-    - docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop todo-client/
-    - docker build -f ./Dockerfile.production -t angmerica/todo-client:production todo-client/
+    - docker build -f ./todo-client/Dockerfile.develop -t angmerica/todo-client:develop todo-client/
+    - docker build -f ./todo-client/Dockerfile.production -t angmerica/todo-client:production todo-client/
 
 deployment:
   develop:
