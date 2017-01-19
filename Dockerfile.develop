@@ -17,8 +17,8 @@ RUN npm install
 COPY . $HOME
 
 # 80 is the default dev server port
-EXPOSE 80
+EXPOSE 8080
 
 RUN npm run build -- --dev
 
-CMD ["http-server", "./dist", "-p", "80"]
+CMD ["http-server", "./dist", "-p", "8080"]
