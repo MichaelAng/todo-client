@@ -1,0 +1,22 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+
+compile:
+  override:
+    - docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop todo-client/
+    - docker build -f ./Dockerfile.production -t angmerica/todo-client:production todo-client/
+
+deployment:
+  develop:
+    branch: develop
+    commands:
+      - docker push angmerica/todo-client:develop
+  production:
+    branch: master
+    commands:
+      - docker push angmerica/todo-client:production
