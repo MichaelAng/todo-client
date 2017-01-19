@@ -7,7 +7,7 @@ RUN mkdir $HOME
 WORKDIR $HOME
 
 # Installs http-server to run a server
-RUN npm install --global http-server
+RUN npm install --global local-web-server
 
 # Sets up and installs all the node modules
 COPY ./package.json $HOME
@@ -21,4 +21,6 @@ EXPOSE 8080
 
 RUN npm run build -- --dev
 
-CMD ["http-server", "./dist", "-p", "8080"]
+WORKDIR $HOME/dist
+
+CMD ["ws", "--spa", "index.html", "-p", "8080"]
