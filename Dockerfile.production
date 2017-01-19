@@ -1,0 +1,24 @@
+# Set up base node image
+FROM node:wheezy
+
+# Set up the Working Directory
+ENV HOME=/usr/src/app
+RUN mkdir $HOME
+WORKDIR $HOME
+
+# Installs http-server to run a server
+RUN npm install --global http-server
+
+# Sets up and installs all the node modules
+COPY ./package.json $HOME
+RUN npm install
+
+# Copies the application onto the image
+COPY . $HOME
+
+# 80 is the default dev server port
+EXPOSE 80
+
+RUN npm run build -- --prod
+
+CMD ["http-server", "./dist", "-p", "80"]
