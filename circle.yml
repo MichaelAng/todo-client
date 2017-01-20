@@ -13,8 +13,8 @@ compile:
 
 test:
   override:
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS; fi
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS --single-run; fi
 
 deployment:
   develop:
