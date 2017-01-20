@@ -13,7 +13,8 @@ compile:
 
 test:
   override:
-    - echo 'No tests at this moment.  But we will run tests in the docker context.'
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run --rm -w /usr/src/app angmerica/todo-client:develop npm run test; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run --rm -w /usr/src/app angmerica/todo-client:production npm run test; fi
 
 deployment:
   develop:
