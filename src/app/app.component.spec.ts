@@ -10,7 +10,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [ NO_ERRORS_SCHEMA ] // For Shallow component test
     });
     TestBed.compileComponents();
   });
