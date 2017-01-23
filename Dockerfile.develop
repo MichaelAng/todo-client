@@ -1,26 +1,52 @@
+# This Dockerfile is for the develop environment.  It will create a container with a distribution
+# folder.  This docker file starts up a local web server. Eventually we will connect this to a real
+# backend server.
+#
+# To use this develop environment:
+# To build an image:
+# $ docker build -f Dockerfile.develop -t angmerica/todo-client:develop .
+# To run an image:
+# $ docker run --name todo-client -p 80:80 -it --rm angmerica/todo-client:develop
+# To run a unit test
+# $ docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run
+#
+# Known issues:
+# The local web server (ws) does not like killing itself when in the docker container.  So open up
+# another terminal and stop the container
+# $ docker rm -f todo-client
+
 # Set up base node image
 FROM node:wheezy
 
-# Set up the Working Directory
+# Set up the Docker Working Directory
 ENV HOME=/usr/src/app
 RUN mkdir $HOME
 WORKDIR $HOME
 
-# Installs http-server to run a server
+# Installs local-web-server to run a local web server
 RUN npm install --global local-web-server
 
-# Sets up and installs all the node modules
+# Pulls in the package.json file and installs all the node dependencies
+# The .dockerignore file should ignore the node module since the container will operate on a
+# linux server.
 COPY ./package.json $HOME
 RUN npm install
 
-# Copies the application onto the image
+# Copies the host machine folder(s) into the docker container so you can develop on your host
+# machine
 COPY . $HOME
 
-# 80 is the default dev server port
+# Exposes the necessary ports for develop
+# 80 is the default develop server port
 EXPOSE 80
 
+# Creates a develop distribution name `dist` folder
 RUN npm run build -- --dev
 
+# Changes the working directory to the `dist` folder
 WORKDIR $HOME/dist
 
+# Kicks off the local-web-server command
+# --spa marks index.html as a single page application. Allows angular to do routing.
+# -p sets port 80 as the default port it serves on
 CMD ["ws", "--spa", "index.html", "-p", "80"]
