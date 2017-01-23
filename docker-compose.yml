@@ -1,9 +1,14 @@
+# This Docker Compose is for the source environment.  It works with the client Dockerfile to
+# set up a local development server that will automatically refresh for you.
+# To use this source environment:
+# $ docker-compose down && docker-compose up -d
+
 client:
-    build: .
+    build: . # Looks for the Dockerfile within the present working directory (pwd)
     ports:
         - "4200:4200"   # Default port for dev webserver
         - "49153:49153" # Live Reload Port
     volumes:
-        - /usr/src/app/node_modules
-        - .:/usr/src/app
-    command: npm start
+        - /usr/src/app/node_modules # Saves the node modules so it does not have to re-install
+        - .:/usr/src/app # Mounts the host folder(s) onto the docker container for live development
+    command: npm start # Kicks off the default `ng serve` command
