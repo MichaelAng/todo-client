@@ -8,8 +8,8 @@ dependencies:
 
 compile:
   override:
-    - docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .
-    - docker build -f ./Dockerfile.production -t angmerica/todo-client:production .
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./Dockerfile.production -t angmerica/todo-client:production .; fi
 
 test:
   override:
