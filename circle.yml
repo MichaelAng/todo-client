@@ -1,5 +1,38 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    # This logs CircleCI into your docker account.  The environment variables are stored in CircleCI
+    - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+
+compile:
+  override:
+    # Creates a build and tag depending on the branch
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./Dockerfile.production -t angmerica/todo-client:production .; fi
+
+test:
+  override:
+    # Runs unit test depending on the branch
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS --single-run; fi
+
+deployment:
+  develop: # pushes a develop image
+    branch: develop
+    commands:
+      - docker push angmerica/todo-client:develop
+  production: # pushes a production image
+    branch: master
+    commands:
+      - docker push angmerica/todo-client:production
+
+# This cicle file are instructions for CircleCI to continuously test and validate your application
+
 # machine:
 #   environment:
 #     PROJECT_NAME: todo-client
