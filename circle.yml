@@ -1,32 +1,31 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
 machine:
+  environment:
+    PROJECT_NAME: todo-client
+    CLUSTER_NAME: todo-client-cluster
+    CLOUDSDK_COMPUTE_ZONE: us-east1-d
+    DEBIAN_FRONTEND: noninteractive
   services:
     - docker
 
 dependencies:
-  override:
-    # This logs CircleCI into your docker account.  The environment variables are stored in CircleCI
-    - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-
-compile:
-  override:
-    # Creates a build and tag depending on the branch
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./Dockerfile.production -t angmerica/todo-client:production .; fi
-
-test:
-  override:
-    # Runs unit test depending on the branch
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS --single-run; fi
+  pre:
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
+    - echo $ACCT_AUTH | base64 --decode -i > ${HOME}/account-auth.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/account-auth.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+    # Reading the zone from the env var is not working so we set it here
+    - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+    - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
+    # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
+    - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
 
 deployment:
-  develop: # pushes a develop image
-    branch: develop
+  prod:
+    branch: k8s
     commands:
-      - docker push angmerica/todo-client:develop
-  production: # pushes a production image
-    branch: master
-    commands:
-      - docker push angmerica/todo-client:production
+      - ./deploy.sh
