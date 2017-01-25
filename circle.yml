@@ -18,6 +18,10 @@ dependencies:
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
     - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+
+compile:
+  override:
+    # Creates a build and tag depending on the branch
     - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
     - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
 
