@@ -5,6 +5,8 @@ machine:
     PROJECT_NAME: todo-client
     CLUSTER_NAME: todo-client-cluster
     CLOUDSDK_COMPUTE_ZONE: us-east1-d
+  services:
+    - docker
 
 dependencies:
   pre:
