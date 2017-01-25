@@ -25,5 +25,5 @@ deployment:
   prod:
     branch: k8s
     commands:
-      - ./deploy.sh
+      - echo "Hello World"
 
