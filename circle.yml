@@ -24,3 +24,4 @@ deployment:
     branch: k8s
     commands:
       - ./deploy.sh
+
