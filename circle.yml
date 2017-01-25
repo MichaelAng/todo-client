@@ -1,35 +1,35 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
-machine:
-  environment:
-    PROJECT_NAME: todo-client
-    CLUSTER_NAME: todo-client-cluster
-    CLOUDSDK_COMPUTE_ZONE: us-east1-d
-  services:
-    - docker
+# machine:
+#   environment:
+#     PROJECT_NAME: todo-client
+#     CLUSTER_NAME: todo-client-cluster
+#     CLOUDSDK_COMPUTE_ZONE: us-east1-d
+#   services:
+#     - docker
 
-dependencies:
-  pre:
-    - echo "Testing dependencies step without gcloud"
-    # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
-    # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
-    # - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
-    # - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    # - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-    # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-    # - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-    # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+# dependencies:
+#   pre:
+#     - echo "Testing dependencies step without gcloud"
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
+#     # - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
-compile:
-  override:
-    - echo "Testing dependencies step without docker builds"
-    # Creates a build and tag depending on the branch
-    # - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
-    # - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
+# compile:
+#   override:
+#     - echo "Testing dependencies step without docker builds"
+#     # Creates a build and tag depending on the branch
+#     # - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
+#     # - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
 
-deployment:
-  k8s:
-    branch: k8s
-    commands:
-      - echo "Hello World"
+# deployment:
+#   k8s:
+#     branch: k8s
+#     commands:
+#       - echo "Hello World"
 
