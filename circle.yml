@@ -29,7 +29,7 @@ deployment:
   k8s:
     branch: k8s
     commands:
-      - echo "Hello World"
+      - ./deploy.sh
 
 # deployment:
 #   develop: # pushes a develop image
