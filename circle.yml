@@ -1,10 +1,6 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
-
-
-
 # The way that was perscribed by CircleCI
-
 
 machine:
   services:
@@ -28,8 +24,9 @@ dependencies:
 compile:
   override:
     # Creates a build and tag depending on the branch
-    - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
-    - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
+     - echo 'Overriding Compile'
+    # - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
+    # - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
 
 test:
   override:
@@ -41,7 +38,8 @@ deployment:
     branch: k8s
     commands:
       # - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push us.gcr.io/${PROJECT_NAME}/hello
-      - kubectl patch deployment $PROJECT_NAME -p '{"spec":{"template":{"spec":{"containers":[{"name":"todo-client","image":"angmerica/todo-client:develop"}]}}}}'
+      - ./deploy.sh
+      # - kubectl patch deployment $PROJECT_NAME -p '{"spec":{"template":{"spec":{"containers":[{"name":"todo-client","image":"angmerica/todo-client:develop"}]}}}}'
 
 
 # The way I have it in develop and production
