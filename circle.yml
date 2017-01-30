@@ -5,6 +5,7 @@
 
 # The way that was perscribed by CircleCI
 
+g
 machine:
   services:
     - docker
