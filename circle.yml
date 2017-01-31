@@ -1,7 +1,5 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
-# The way that was perscribed by CircleCI
-
 machine:
   services:
     - docker
@@ -12,6 +10,7 @@ machine:
 
 dependencies:
   override:
+    - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
     - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
@@ -24,68 +23,28 @@ dependencies:
 compile:
   override:
     # Creates a build and tag depending on the branch
-     - echo 'Overriding Compile'
-    # - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
-    # - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./Dockerfile.production -t angmerica/todo-client:production .; fi
+    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:k8s .; fi
 
 test:
   override:
     # Runs unit test depending on the branch
-    - echo 'Overriding tests'
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS --single-run; fi
+    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:k8s npm run test -- --browser PhantomJS --single-run; fi
 
 deployment:
-  k8s:
+  develop: # pushes a develop image
+    branch: develop
+    commands:
+      - docker push angmerica/todo-client:develop
+  production: # pushes a production image
+    branch: master
+    commands:
+      - docker push angmerica/todo-client:production
+  k8s: # pushes a production image
     branch: k8s
     commands:
-      # - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push us.gcr.io/${PROJECT_NAME}/hello
+      - docker push angmerica/todo-client:k8s
       - ./deploy.sh
-      # - kubectl patch deployment $PROJECT_NAME -p '{"spec":{"template":{"spec":{"containers":[{"name":"todo-client","image":"angmerica/todo-client:develop"}]}}}}'
-
-
-# The way I have it in develop and production
-
-# deployment:
-#   develop: # pushes a develop image
-#     branch: develop
-#     commands:
-#       - docker push angmerica/todo-client:develop
-#   production: # pushes a production image
-#     branch: master
-#     commands:
-#       - docker push angmerica/todo-client:production
-
-# This cicle file are instructions for CircleCI to continuously test and validate your application
-
-# machine:
-#   environment:
-#     PROJECT_NAME: todo-client
-#     CLUSTER_NAME: todo-client-cluster
-#     CLOUDSDK_COMPUTE_ZONE: us-east1-d
-#   services:
-#     - docker
-
-# dependencies:
-#   pre:
-#     - echo "Testing dependencies step without gcloud"
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
-#     # - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-#     # - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-
-# compile:
-#   override:
-#     - echo "Testing dependencies step without docker builds"
-#     # Creates a build and tag depending on the branch
-#     # - docker build -t us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 .
-#     # - docker tag us.gcr.io/${PROJECT_NAME}/hello:$CIRCLE_SHA1 us.gcr.io/${PROJECT_NAME}/hello:latest
-
-# deployment:
-#   k8s:
-#     branch: k8s
-#     commands:
-#       - echo "Hello World"
-
