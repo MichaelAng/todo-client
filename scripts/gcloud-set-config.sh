@@ -5,9 +5,9 @@ set -e
 
 # Set Google configurations
 if [ $CIRCLE_BRANCH = 'develop' ]; then
-    CLUSTER_NAME_ENV=$CLUSTER_NAME
+    CLUSTER_NAME_ENV=$CLUSTER_NAME-develop
 elif [ $CIRCLE_BRANCH = 'master' ]; then
-    CLUSTER_NAME_ENV=$CLUSTER_NAME
+    CLUSTER_NAME_ENV=$CLUSTER_NAME-production
 else
     CLUSTER_NAME_ENV=$CLUSTER_NAME
 fi
