@@ -13,12 +13,8 @@ dependencies:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
-    - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+    - ./scripts/gcloud-auth.sh
+    - ./scripts/gcloud-set-config.sh
 
 compile:
   override:
@@ -39,10 +35,12 @@ deployment:
     branch: develop
     commands:
       - docker push angmerica/todo-client:develop
+      - ./deploy.sh angmerica/todo-client:develop
   production: # pushes a production image
     branch: master
     commands:
       - docker push angmerica/todo-client:production
+      - ./deploy.sh angmerica/todo-client:production
   k8s: # pushes a production image
     branch: k8s
     commands:
