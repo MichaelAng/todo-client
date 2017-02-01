@@ -47,4 +47,4 @@ deployment:
     branch: k8s
     commands:
       - docker push angmerica/todo-client:k8s
-      - ./deploy.sh
+      - ./deploy.sh angmerica/todo-client:k8s
