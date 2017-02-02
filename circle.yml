@@ -35,14 +35,14 @@ deployment:
     branch: develop
     commands:
       - docker push angmerica/todo-client:develop
-      - ./deploy.sh angmerica/todo-client:develop
+      - ./scripts/deploy.sh angmerica/todo-client:develop
   production: # pushes a production image
     branch: master
     commands:
       - docker push angmerica/todo-client:production
-      - ./deploy.sh angmerica/todo-client:production
+      - ./scripts/deploy.sh angmerica/todo-client:production
   k8s: # pushes a production image
     branch: k8s
     commands:
       - docker push angmerica/todo-client:k8s
-      - ./deploy.sh angmerica/todo-client:k8s
+      - ./scripts/deploy.sh angmerica/todo-client:k8s
