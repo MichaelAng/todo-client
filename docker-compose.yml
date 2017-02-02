@@ -1,7 +1,7 @@
 # This Docker Compose is for the source environment.  It works with the client Dockerfile to
 # set up a local development server that will automatically refresh for you.
 # To use this source environment:
-# $ docker-compose down && docker-compose up --build
+# $ docker-compose down -v && docker-compose up --build
 
 client:
     build: . # Looks for the Dockerfile within the present working directory (pwd)
