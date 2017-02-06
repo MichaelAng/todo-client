@@ -14,20 +14,22 @@ module.exports = function ApplicationRouter(applicationController) {
 
     /* Log the request and send it to the next middleware function */
     router.use((req, res, next) => {
-        console.info(`${req.method} ${req.url}`);
+        console.info(`api-server received ${req.method} ${req.url}`);
         next();
     });
 
-    router.use((req, res) => {
-        applicationController.asyncGetApiVersion()
+    router.use((req, res, next) => {
+        applicationController.getApiVersion()
             .then(
                 (number) => {
+                    // Bind the api version to the request
                     res.header('x-api-version', number)
-                        .status(200)
-                        .send();
+                    // Pass the request to the next router
+                    next();
                 },
                 (issue) => {
-                    res.setStatus(422).send(issue.message);
+                    // Probably want to change this later so we don't leak stuff out while in production
+                    res.setStatus(500).send(issue.message);
                 }
             );
     });

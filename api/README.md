@@ -1,0 +1,1 @@
+You can use this Postman collection to test - https://www.getpostman.com/collections/2849d2c66609846aa73f
