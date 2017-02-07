@@ -6,28 +6,26 @@
 version: "2"
 
 services:
-    # client:
-    #     # Looks for the Dockerfile within the present working directory (pwd)
-    #     build: .
-    #     # Kicks off the default `ng serve` command
-    #     command: npm start
-    #     container_name: client
-    #     ports:
-    #         # Default port for dev webserver
-    #         - 4200:4200
-    #         # Live Reload Port
-    #         - 49153:49153
-    #     volumes:
-    #         # Saves the node modules so it does not have to re-install
-    #         - /usr/src/app/node_modules
-    #         # Mounts the host folder(s) onto the docker container for live development
-    #         - .:/usr/src/app
+    client:
+        # Looks for the Dockerfile within the present working directory (pwd)
+        build: ./client
+        # Kicks off the default `ng serve` command
+        command: npm start
+        container_name: client
+        ports:
+            - 4200:4200 # Default port for dev webserver
+            - 49153:49153 # Live Reload Port
+        volumes:
+            # Saves the node modules so it does not have to re-install
+            - /usr/src/app/node_modules
+            # Mounts the host folder(s) onto the docker container for live development
+            - ./client:/usr/src/app
 
-    api-server:
-        build: ./api-server
+    api:
+        build: ./api
         # Start the application with PM2. This watches files and restarts the application
         command: pm2-docker --watch start main.js
-        container_name: api-server
+        container_name: api
         environment:
             database_hostname: 'mongodb://mongodb'
         depends_on:
@@ -38,7 +36,7 @@ services:
             # Mount the modules in a volume
             - /usr/src/app/node_modules
             # Mount the host folder(s) onto the docker container for live development
-            - ./api-server/:/usr/src/app
+            - ./api/:/usr/src/app
 
     mongodb:
         container_name: mongodb
