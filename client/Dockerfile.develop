@@ -23,9 +23,6 @@ ENV HOME=/usr/src/app
 RUN mkdir $HOME
 WORKDIR $HOME
 
-# Installs local-web-server to run a local web server
-RUN npm install --global local-web-server
-
 # Pulls in the package.json file and installs all the node dependencies
 # The .dockerignore file should ignore the node module since the container will operate on a
 # linux server.
@@ -45,8 +42,3 @@ RUN npm run build -- --dev
 
 # Changes the working directory to the `dist` folder
 WORKDIR $HOME/dist
-
-# Kicks off the local-web-server command
-# --spa marks index.html as a single page application. Allows angular to do routing.
-# -p sets port 80 as the default port it serves on
-CMD ["ws", "--spa", "index.html", "-p", "80"]

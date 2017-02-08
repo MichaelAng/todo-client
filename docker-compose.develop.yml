@@ -1,0 +1,53 @@
+# This Docker Compose is for the source environment.  It works with the client Dockerfile to
+# set up a local development server that will automatically refresh for you.
+# To use this source environment:
+# $ docker-compose down -v && docker-compose up --build
+
+version: "2"
+
+services:
+    client:
+        # Looks for the Dockerfile within the present working directory (pwd)
+        build:
+            context: ./client
+            dockerfile: Dockerfile.develop
+        # Kicks off the default `ng serve` command
+        container_name: client
+        volumes:
+            # Saves the node modules so it does not have to re-install
+            - /usr/src/app/node_modules
+            # Mounts the host folder(s) onto the docker container for live development
+            - ./client:/usr/src/app
+            - /usr/src/app/dist
+
+    api:
+        build: ./api
+        # Start the application with PM2. This watches files and restarts the application
+        command: pm2-docker --watch start main.js
+        container_name: api
+        environment:
+            database_hostname: 'mongodb://mongodb'
+        depends_on:
+            - mongodb
+        volumes:
+            # Mount the modules in a volume
+            - /usr/src/app/node_modules
+            # Mount the host folder(s) onto the docker container for live development
+            - ./api/:/usr/src/app
+
+    webserver:
+        build:
+            context: ./webserver
+            dockerfile: Dockerfile.develop
+        depends_on:
+            - api
+            - client
+        container_name: webserver
+        ports:
+            - 80:80
+        volumes_from:
+            - client
+
+    mongodb:
+        container_name: mongodb
+        image: mongo:3.0
