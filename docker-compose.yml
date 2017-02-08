@@ -12,9 +12,6 @@ services:
         # Kicks off the default `ng serve` command
         command: npm start
         container_name: client
-        ports:
-            - 4200:4200 # Default port for dev webserver
-            - 49153:49153 # Live Reload Port
         volumes:
             # Saves the node modules so it does not have to re-install
             - /usr/src/app/node_modules
@@ -30,13 +27,20 @@ services:
             database_hostname: 'mongodb://mongodb'
         depends_on:
             - mongodb
-        ports:
-            - 9000:9000
         volumes:
             # Mount the modules in a volume
             - /usr/src/app/node_modules
             # Mount the host folder(s) onto the docker container for live development
             - ./api/:/usr/src/app
+
+    webserver:
+        build: ./webserver
+        depends_on:
+            - api
+            - client
+        container_name: webserver
+        ports:
+            - 80:80
 
     mongodb:
         container_name: mongodb
