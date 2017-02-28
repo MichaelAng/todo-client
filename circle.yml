@@ -16,23 +16,18 @@ compile:
 test:
   override:
     # Runs unit test depending on the branch
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:develop npm run test -- --browser PhantomJS --single-run; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:production npm run test -- --browser PhantomJS --single-run; fi
-    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker run -it --rm -w /usr/src/app angmerica/todo-client:k8s npm run test -- --browser PhantomJS --single-run; fi
+    - ./scripts/circle-run-test.sh
 
 deployment:
   develop: # pushes a develop image
     branch: develop
     commands:
-      - docker push angmerica/todo-client:develop
-      - ./scripts/deploy.sh angmerica/todo-client:develop
+      - ./scripts/circle-docker-build.sh
   production: # pushes a production image
     branch: master
     commands:
-      - docker push angmerica/todo-client:production
-      - ./scripts/deploy.sh angmerica/todo-client:production
+      - ./scripts/circle-docker-build.sh
   k8s: # pushes a production image
     branch: k8s
     commands:
-      - docker push angmerica/todo-client:k8s
-      - ./scripts/deploy.sh angmerica/todo-client:k8s
+      - ./scripts/circle-docker-build.sh
