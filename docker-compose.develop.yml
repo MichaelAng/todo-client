@@ -8,15 +8,17 @@ version: "2"
 services:
     client:
         # Looks for the Dockerfile within the present working directory (pwd)
-        build: ./client
+        build:
+            context: ./client
+            dockerfile: Dockerfile.develop
         # Kicks off the default `ng serve` command
-        command: npm start
         container_name: client
         volumes:
             # Saves the node modules so it does not have to re-install
             - /usr/src/app/node_modules
             # Mounts the host folder(s) onto the docker container for live development
             - ./client:/usr/src/app
+            - /usr/src/app/dist
 
     api:
         build: ./api
@@ -34,13 +36,17 @@ services:
             - ./api/:/usr/src/app
 
     webserver:
-        build: ./webserver
+        build:
+            context: ./webserver
+            dockerfile: Dockerfile.develop
         depends_on:
             - api
             - client
         container_name: webserver
         ports:
             - 80:80
+        volumes_from:
+            - client
 
     mongodb:
         container_name: mongodb

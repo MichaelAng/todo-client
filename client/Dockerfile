@@ -24,8 +24,7 @@ COPY . $HOME
 # Exposes the necessary ports for development
 # 4200 is the default dev server port
 # 49153 is the automatic refresh (live reload) port
-EXPOSE 4200
-EXPOSE 49153
+EXPOSE 80
 
 # Kicks off the default `ng serve` command
 CMD ["npm", "start"]

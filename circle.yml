@@ -19,9 +19,9 @@ dependencies:
 compile:
   override:
     # Creates a build and tag depending on the branch
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:develop .; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./Dockerfile.production -t angmerica/todo-client:production .; fi
-    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker build -f ./Dockerfile.develop -t angmerica/todo-client:k8s .; fi
+    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./client/Dockerfile.develop -t angmerica/todo-client:develop .; fi
+    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./client/Dockerfile.production -t angmerica/todo-client:production .; fi
+    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker build -f ./client/Dockerfile.develop -t angmerica/todo-client:k8s .; fi
 
 test:
   override:
