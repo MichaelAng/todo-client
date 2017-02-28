@@ -1,13 +1,7 @@
 #!/bin/bash
 # The circle docker deploy shell script deploys docker images
 # The purpose is so CircleCI can automatically push the docker images
-# This shell script can be used in conjunction with circle.yml or to used to deploy manually.
-# This assumes you are in the correct branch you want to deploy in.
-#
-# To use this file from the root context:
-# $ git checkout master && CIRCLE_BRANCH=master ./scripts/circle-docker-deploy.sh
-# $ git checkout staging && CIRCLE_BRANCH=staging ./scripts/circle-docker-deploy.sh
-# $ git checkout develop && CIRCLE_BRANCH=develop ./scripts/circle-docker-deploy.sh
+# This shell script can be used in conjunction with circle.yml.
 
 # Exit on any error
 set -e

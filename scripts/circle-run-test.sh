@@ -1,13 +1,7 @@
 #!/bin/bash
 # The circle-run-test shell script tests the docker images
 # The purpose is so CircleCI can automatically test the docker images
-# This shell script can be used in conjunction with circle.yml or to used to test images manually.
-# This assumes you are in the correct branch you want to test in.
-#
-# To use this file from the root context:
-# $ git checkout master && CIRCLE_BRANCH=master ./scripts/circle-run-test.sh
-# $ git checkout staging && CIRCLE_BRANCH=staging ./scripts/circle-run-test.sh
-# $ git checkout develop && CIRCLE_BRANCH=develop ./scripts/circle-run-test.sh
+# This shell script can be used in conjunction with circle.yml.
 
 # Exit on any error
 set -e
