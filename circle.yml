@@ -3,25 +3,15 @@
 machine:
   services:
     - docker
-  environment:
-    PROJECT_NAME: todo-client
-    CLUSTER_NAME: todo-client-cluster
-    CLOUDSDK_COMPUTE_ZONE: us-east1-d
 
 dependencies:
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
-    - ./scripts/gcloud-auth.sh
-    - ./scripts/gcloud-set-config.sh
 
 compile:
   override:
     # Creates a build and tag depending on the branch
-    - if [ $CIRCLE_BRANCH = 'develop' ]; then docker build -f ./client/Dockerfile.develop -t angmerica/todo-client:develop .; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then docker build -f ./client/Dockerfile.production -t angmerica/todo-client:production .; fi
-    - if [ $CIRCLE_BRANCH = 'k8s' ]; then docker build -f ./client/Dockerfile.develop -t angmerica/todo-client:k8s .; fi
+    - ./scripts/circle-docker-build.sh
 
 test:
   override:
