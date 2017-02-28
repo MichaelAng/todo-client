@@ -1,7 +1,7 @@
 #!/bin/bash
-# The circle docker deploy shell script builds docker images
+# The circle-docker-build shell script builds docker images
 # The purpose is so CircleCI can automatically build the docker images
-# This shell script can be used in conjunction with circle.yml or to used to deploy manually.
+# This shell script can be used in conjunction with circle.yml or to used to build manually.
 # This assumes you are in the correct branch you want to build in.
 #
 # To use this file from the root context:
