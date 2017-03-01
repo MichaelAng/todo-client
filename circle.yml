@@ -22,12 +22,12 @@ deployment:
   develop: # pushes a develop image
     branch: develop
     commands:
-      - ./scripts/circle-docker-build.sh
+      - ./scripts/circle-docker-deploy.sh
   production: # pushes a production image
     branch: master
     commands:
-      - ./scripts/circle-docker-build.sh
+      - ./scripts/circle-docker-deploy.sh
   k8s: # pushes a production image
     branch: k8s
     commands:
-      - ./scripts/circle-docker-build.sh
+      - ./scripts/circle-docker-deploy.sh
