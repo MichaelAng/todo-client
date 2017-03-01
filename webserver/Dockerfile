@@ -6,3 +6,4 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 
 # Copy these files into the image
 ADD nginx.conf /etc/nginx/nginx.conf
+ADD nginx.dist.conf /etc/nginx/nginx.dist.conf
