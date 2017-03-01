@@ -1,7 +1,8 @@
-# This Docker Compose is for the source environment.  It works with the client Dockerfile to
-# set up a local development server that will automatically refresh for you.
-# To use this source environment:
-# $ docker-compose down -v && docker-compose up --build
+# This Docker Compose is for the develop environment.  It works with the client Dockerfile to
+# set up a development server.  This does not watch files for changes.
+#
+# To use this develop environment:
+# $ docker-compose -f docker-compose.develop.yml down -v && docker-compose -f docker-compose.develop.yml up --build
 
 version: "2"
 
@@ -16,8 +17,6 @@ services:
         volumes:
             # Saves the node modules so it does not have to re-install
             - /usr/src/app/node_modules
-            # Mounts the host folder(s) onto the docker container for live development
-            - ./client:/usr/src/app
             - /usr/src/app/dist
 
     api:
