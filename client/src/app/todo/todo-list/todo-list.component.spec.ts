@@ -5,7 +5,17 @@ import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { Observable } from 'rxjs/Rx';
+
 import { TodoListComponent } from './todo-list.component';
+import { Todo } from '../models/todo.model';
+import { TodoService } from '../shared/todo.service';
+
+class MockTestService {
+  public getTodos(): Observable<Todo[]> {
+    return Observable.of([new Todo(), new Todo()]);
+  }
+}
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -16,8 +26,10 @@ describe('TodoListComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([
           { path: 'todos', component: TodoListComponent }
-        ]),
-
+        ])
+      ],
+      providers: [
+          {provide: TodoService, useClass: MockTestService}
       ],
       declarations: [ TodoListComponent],
       schemas: [ NO_ERRORS_SCHEMA ] // For Shallow component test
