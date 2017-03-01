@@ -2,45 +2,46 @@
 # set up a local development server that will automatically refresh for you.
 # To use this source environment:
 # $ docker-compose down -v && docker-compose up --build
+#
+# You can change the build environment by updating the client command and webserver volume
 
 version: "2"
 
 services:
     client:
-        # Looks for the Dockerfile within the present working directory (pwd)
         build: ./client
-        # Kicks off the default `ng serve` command
-        command: npm start
+        # command: npm run build -- --dev # Uncomment to build develop environment
+        # command: npm run build -- --prod #  Uncomment to build production environment
         container_name: client
         volumes:
-            # Saves the node modules so it does not have to re-install
-            - /usr/src/app/node_modules
-            # Mounts the host folder(s) onto the docker container for live development
-            - ./client:/usr/src/app
+            - /usr/src/app/node_modules # Saves the node modules so it does not have to re-install
+            - ./client:/usr/src/app # Mounts the host folder(s) onto the docker container for live development
+            - /usr/src/app/dist # Exposes the /dist folder for develop and production environment
 
     api:
         build: ./api
-        # Start the application with PM2. This watches files and restarts the application
-        command: pm2-docker --watch start main.js
+        command: pm2-docker --watch start main.js # Start the application with PM2. This watches files and restarts the application.
         container_name: api
         environment:
             database_hostname: 'mongodb://mongodb'
         depends_on:
             - mongodb
         volumes:
-            # Mount the modules in a volume
-            - /usr/src/app/node_modules
-            # Mount the host folder(s) onto the docker container for live development
-            - ./api/:/usr/src/app
+            - /usr/src/app/node_modules # Mount the modules in a volume
+            - ./api/:/usr/src/app # Mount the host folder(s) onto the docker container for live development
 
     webserver:
         build: ./webserver
+        container_name: webserver
         depends_on:
             - api
             - client
-        container_name: webserver
         ports:
             - 80:80
+        volumes_from:
+            - client
+        # volumes: # Uncomment to Expose the develop or production environment's webserver
+        #     - ./webserver/nginx.dist.conf:/etc/nginx/nginx.conf
 
     mongodb:
         container_name: mongodb

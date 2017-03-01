@@ -21,9 +21,8 @@ RUN npm install
 # machine
 COPY . $HOME
 
-# Exposes the necessary ports for development
-# 4200 is the default dev server port
-# 49153 is the automatic refresh (live reload) port
+# Exposes the necessary ports for develop
+# 80 is the default develop server port
 EXPOSE 80
 
 # Kicks off the default `ng serve` command

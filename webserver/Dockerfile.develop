@@ -1,8 +1,0 @@
-FROM nginx:alpine
-
-# Link nginx logs to stdout and stderr
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
-    ln -sf /dev/stderr /var/log/nginx/error.log
-
-# Copy these files into the image
-ADD nginx.develop.conf /etc/nginx/nginx.conf
