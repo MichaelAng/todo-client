@@ -26,6 +26,8 @@ services:
             database_hostname: 'mongodb://mongodb'
         depends_on:
             - mongodb
+        ports: # Expose port 9000 for development purpose only.
+            - 9000:9000
         volumes:
             - /usr/src/app/node_modules # Mount the modules in a volume
             - ./api/:/usr/src/app # Mount the host folder(s) onto the docker container for live development
