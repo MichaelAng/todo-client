@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { CheckboxModule } from 'primeng/primeng';
 
-import { TodoItemComponent }    from './todo-item/todo-item.component';
-import { TodoListComponent }    from './todo-list/todo-list.component';
-import { TodoRoutingModule }    from './todo-routing.module';
+import { TodoItemComponent } from './todo-item/todo-item.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
+import { TodoRoutingModule } from './todo-routing.module';
+import { TodoService } from './shared/todo.service';
 
 @NgModule({
   imports:      [
@@ -21,6 +22,9 @@ import { TodoRoutingModule }    from './todo-routing.module';
     TodoItemComponent,
     TodoListComponent
   ],
-  exports:      []
+  exports:      [],
+  providers: [
+    TodoService
+  ]
 })
 export class TodoModule { }

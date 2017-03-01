@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Todo } from '../models/todo.model';
-
+import { TodoService } from '../shared/todo.service';
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -9,16 +9,23 @@ import { Todo } from '../models/todo.model';
 })
 export class TodoListComponent implements OnInit {
   private todo: Todo[] = [
-    { id: 1, title: 'somename', complete: false },
-    { id: 1, title: 'somename', complete: false },
-    { id: 1, title: 'somename', complete: false },
-    { id: 1, title: 'somename', complete: false },
-    { id: 1, title: 'somename', complete: false }
+    { id: 1, title: 'somename', completed: false },
+    { id: 1, title: 'somename', completed: false },
+    { id: 1, title: 'somename', completed: false },
+    { id: 1, title: 'somename', completed: false },
+    { id: 1, title: 'somename', completed: false }
   ];
 
-  constructor() { }
+  constructor(
+    private todoService: TodoService
+  ) { }
 
   ngOnInit() {
+    this.todoService.getTodos()
+      .subscribe(
+        console.log
+      );
+
   }
 
 }
