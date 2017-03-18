@@ -6,7 +6,7 @@
 
 # Exit on any error
 set -e
-echo THE ENVIRONMENT is $NODE_ENV
+
 [ "${NODE_ENV:=NODE_ENV=development}" ]
 if [ $NODE_ENV = "integration" ] || [ $NODE_ENV = "staging" ] || [ $NODE_ENV = "production" ]; then
     nginx -c /etc/nginx/nginx.remote.conf
