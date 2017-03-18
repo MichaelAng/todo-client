@@ -26,4 +26,4 @@ COPY . $HOME
 EXPOSE 80
 
 # Kicks off the default `ng serve` command
-CMD ["npm", "start"]
+CMD ["./startup.sh"]
