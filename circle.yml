@@ -19,15 +19,19 @@ test:
     - ./scripts/circle-run-test.sh
 
 deployment:
-  develop: # pushes a develop image
+  integration: # pushes a integration image
     branch: develop
+    commands:
+      - ./scripts/circle-docker-deploy.sh
+  staging: # pushes a staging image
+    branch: staging
     commands:
       - ./scripts/circle-docker-deploy.sh
   production: # pushes a production image
     branch: master
     commands:
       - ./scripts/circle-docker-deploy.sh
-  k8s: # pushes a production image
+  k8s: # Expirmental: pushes a k8 images
     branch: k8s
     commands:
       - ./scripts/circle-docker-deploy.sh
