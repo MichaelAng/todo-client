@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: api
+    spec:
+      containers:
+      - image: api:v1
+        name: api
+        ports:
+        - name: http-server
+          containerPort: 9000
+        env:
+        - name: database_hostname
+          value: "mongodb://mongo-service:27017"
