@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webserver-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: webserver
+    spec:
+      containers:
+      - image: webserver:v1
+        name: webserver
+        ports:
+        - name: http-server
+          containerPort: 80
+        env:
+        - name: NODE_ENV
+          value: "integration"
