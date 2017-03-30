@@ -30,5 +30,6 @@
     kubectl create -f deployments/api-deployment.yml -f services/api-service.yml
     kubectl create -f deployments/webserver-deployment.yml -f services/webserver-service.yml
 
-
+4. Run `minikube service webserver-service`
+5. Navigate to `${mini-kube}:***/todos`
 
