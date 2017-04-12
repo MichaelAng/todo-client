@@ -16,7 +16,6 @@ general:
 dependencies:
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - npm install -g angular-cli
 
 compile:
   override:
@@ -26,7 +25,9 @@ compile:
 test:
   override:
     # Runs unit test depending on the branch
-    - cd client && ng test --browser PhantomJS --code-coverage --single-run
+    - cd client
+    - npm install
+    - ng test --browser PhantomJS --code-coverage --single-run
     # - ./scripts/circle-run-test.sh
 
 deployment:
