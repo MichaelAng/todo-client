@@ -25,9 +25,7 @@ compile:
 test:
   override:
     # Runs unit test depending on the branch
-    - cd client
-    - npm install
-    - ng test --browser PhantomJS --code-coverage --single-run
+    - cd client && npm install && npm test -- --browser PhantomJS --code-coverage --single-run
     # - ./scripts/circle-run-test.sh
 
 deployment:
