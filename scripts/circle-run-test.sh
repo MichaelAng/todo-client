@@ -6,6 +6,8 @@
 # Exit on any error
 set -e
 
+ng test --watch=false
+
 if [ $CIRCLE_BRANCH = 'master' ]; then
     docker run -it --rm -w /usr/src/app angmerica/todo-client:client-production npm run lint
     docker run -it --rm -w /usr/src/app angmerica/todo-client:client-production npm run test -- --browser PhantomJS --single-run
