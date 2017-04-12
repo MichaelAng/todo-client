@@ -3,6 +3,8 @@
 machine:
   services:
     - docker
+  node:
+    version: 7.6.0
 
 dependencies:
   override:
@@ -11,12 +13,13 @@ dependencies:
 compile:
   override:
     # Creates a build and tag depending on the branch
-    - ./scripts/circle-docker-build.sh
+    # - ./scripts/circle-docker-build.sh
 
 test:
   override:
     # Runs unit test depending on the branch
-    - ./scripts/circle-run-test.sh
+    - ng test --code-coverage --single-run
+    # - ./scripts/circle-run-test.sh
 
 deployment:
   integration: # pushes a integration image
