@@ -6,6 +6,13 @@ machine:
   node:
     version: 7.6.0
 
+# General settings
+general:
+  # Circle ci allows you to save "artifacts" which are basically files you can access after the build finishes.
+  # we gonna save our coverage test results
+  artifacts:
+    - "coverage"
+
 dependencies:
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
@@ -18,7 +25,7 @@ compile:
 test:
   override:
     # Runs unit test depending on the branch
-    - ng test --code-coverage --single-run
+    - cd client && npm run test -- --browser PhantomJS --code-coverage --single-run
     # - ./scripts/circle-run-test.sh
 
 deployment:
