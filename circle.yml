@@ -16,6 +16,7 @@ general:
 dependencies:
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+    - npm install -g angular-cli
 
 compile:
   override:
