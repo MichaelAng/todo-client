@@ -26,10 +26,10 @@
 2. `eval $(minikube docker-env)`
 3. Get the deployment and service up
 
-    kubectl create -f deployments/mongo-deployment.yml -f services/mongo-service.yml
-    kubectl create -f deployments/api-deployment.yml -f services/api-service.yml
-    kubectl create -f deployments/webserver-deployment.yml -f services/webserver-service.yml
+    kubectl create -f deployments/mongo-deployment.yml
+    kubectl create -f deployments/api-deployment.yml
+    kubectl create -f deployments/webserver-deployment.yml
 
 4. Run `minikube service webserver-service`
-5. Navigate to `${mini-kube}:***/todos`
+5. Navigate to `${mini-kube}:***/api/todos`
 
