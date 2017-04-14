@@ -20,13 +20,12 @@ dependencies:
 compile:
   override:
     # Creates a build and tag depending on the branch
-    # - ./scripts/circle-docker-build.sh
+    - ./scripts/circle-docker-build.sh
 
 test:
   override:
     # Runs unit test depending on the branch
-    - cd client && npm install && npm test -- --browser PhantomJS --code-coverage --single-run
-    # - ./scripts/circle-run-test.sh
+    - ./scripts/circle-run-test.sh
 
 deployment:
   integration: # pushes a integration image

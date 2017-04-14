@@ -10,6 +10,7 @@ RUN mkdir /webserver
 ADD startup.sh /webserver/startup.sh
 ADD nginx.development.conf /etc/nginx/nginx.development.conf
 ADD nginx.remote.conf /etc/nginx/nginx.remote.conf
+ADD /dist /usr/src/app/dist
 
 WORKDIR /webserver
 

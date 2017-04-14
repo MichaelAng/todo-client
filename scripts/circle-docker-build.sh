@@ -8,6 +8,8 @@ set -e
 
 HOMEPATH=$HOME/todo-client
 
+cd client && npm install && ng build --prod --output-path="../webserver/dist" && cd ..
+
 if [ $CIRCLE_BRANCH = 'master' ]; then
     docker build -t angmerica/todo-client:api-production $HOMEPATH/api/
     docker build -t angmerica/todo-client:client-production $HOMEPATH/client/
