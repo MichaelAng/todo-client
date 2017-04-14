@@ -33,4 +33,4 @@ spec:
           containerPort: 9000
         env:
         - name: database_hostname
-          value: "mongodb://mongo-service:27017"
+          value: "mongodb://mongo:27017"

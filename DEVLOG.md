@@ -24,12 +24,17 @@
 # My startup script process
 1. `minikube start --vm-driver=xhyve`
 2. `eval $(minikube docker-env)`
-3. Get the deployment and service up
+3. Build the docker images
+4. Get the deployment and service up
 
-    kubectl create -f config/mongo-deployment.yml
-    kubectl create -f config/api-deployment.yml
-    kubectl create -f config/webserver-deployment.yml
+    `kubectl create -f config/mongo-deployment.yml`
+    `kubectl create -f config/api-deployment.yml`
+    `kubectl create -f config/webserver-deployment.yml`
 
-4. Run `minikube service webserver-service`
-5. Navigate to `${mini-kube}:***/api/todos`
+5. Run `minikube service webserver`
+6. Navigate to `${mini-kube}:***/api/todos`
 
+OR
+1. `minikube start --vm-driver=xhyve`
+2. `eval $(minikube docker-env)`
+3. `scripts/startup.sh`
