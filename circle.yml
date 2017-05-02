@@ -18,14 +18,15 @@ dependencies:
     - client/node_modules
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - npm prune && npm install:
+    - npm prune && npm install --quiet:
         pwd: client
 
 test:
   override:
     # Runs unit test depending on the branch
-    - npm run test -- --code-coverage --browsers=PhantomJS --single-run:
+    - npm run test -- --code-coverage --browsers=PhantomJS --single-run && mv coverage/ $CIRCLE_ARTIFACTS/:
         pwd: client
+
     - npm run lint:
         pwd: client
 
