@@ -8,7 +8,7 @@ import { TodoService } from '../shared/todo.service';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
-  private todo: Todo[] = [
+  todo: Todo[] = [
     { id: 1, title: 'somename', completed: false },
     { id: 1, title: 'somename', completed: false },
     { id: 1, title: 'somename', completed: false },

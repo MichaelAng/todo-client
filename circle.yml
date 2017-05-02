@@ -57,7 +57,7 @@ deployment:
   prototype-minikube: # Expirmental: pushes a k8 images
     branch: prototype-minikube
     commands:
-      - ng build --prod --output-path="../webserver/dist":
+      - npm run build -- --prod --output-path="../webserver/dist":
         pwd: client
       - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
       - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
