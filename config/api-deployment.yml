@@ -26,7 +26,7 @@ spec:
         name: api
     spec:
       containers:
-      - image: api:v1
+      - image: angmerica/todo-client:api-develop-${CIRCLE_SHA1}
         name: api
         ports:
         - name: http-server

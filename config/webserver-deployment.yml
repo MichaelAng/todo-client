@@ -27,7 +27,7 @@ spec:
         name: webserver
     spec:
       containers:
-      - image: webserver:v1
+      - image: angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} 
         name: webserver
         ports:
         - name: http-server
