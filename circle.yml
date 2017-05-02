@@ -54,11 +54,11 @@ deployment:
     branch: master
     commands:
       - ./scripts/circle-docker-deploy.sh
-  k8s: # Expirmental: pushes a k8 images
+  prototype-minikube: # Expirmental: pushes a k8 images
     branch: prototype-minikube
     commands:
-      - cd client && ng build --prod --output-path="../webserver/dist"
-      - cd ..
+      - ng build --prod --output-path="../webserver/dist":
+        pwd: client
       - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
       - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
       - docker push angmerica/todo-client:api-develop
