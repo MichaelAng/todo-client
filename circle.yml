@@ -35,8 +35,7 @@ dependencies:
 
 compile:
   override:
-    - npm run build -- --prod --output-path="../webserver/dist":
-      pwd: client
+    - cd client && npm run build -- --prod --output-path="../webserver/dist"
 
 test:
   override:
