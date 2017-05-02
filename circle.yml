@@ -23,7 +23,7 @@ dependencies:
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
     - npm prune && npm install --quiet:
-        pwd: client
+      pwd: client
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0 kubectl
     - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
@@ -33,13 +33,18 @@ dependencies:
     - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
+compile:
+  override:
+    - npm run build -- --prod --output-path="../webserver/dist":
+      pwd: client
+
 test:
   override:
     # Runs unit test depending on the branch
     - npm run test -- --code-coverage --browsers=PhantomJS --single-run && mv coverage/ $CIRCLE_ARTIFACTS/:
-        pwd: client
+      pwd: client
     - npm run lint:
-        pwd: client
+      pwd: client
 
 deployment:
   integration: # pushes a integration image
@@ -56,9 +61,6 @@ deployment:
       - ./scripts/circle-docker-deploy.sh
   prototype-minikube: # Expirmental: pushes a k8 images
     branch: prototype-minikube
-    commands:
-      - npm run build -- --prod --output-path="../webserver/dist":
-        pwd: client
       - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
       - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
       - docker push angmerica/todo-client:api-develop
