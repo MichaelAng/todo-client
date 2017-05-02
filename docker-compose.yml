@@ -10,12 +10,13 @@ version: "2"
 services:
     api:
         build: ./api
-        command: pm2-docker --watch start main.js # Start the application with PM2. This watches files and restarts the application.
+        command: ./startup.sh # Start the application with PM2. This watches files and restarts the application.
         container_name: api
         depends_on:
             - mongodb
         environment:
             database_hostname: $database_hostname
+            NODE_ENV: $NODE_ENV
         ports: # Expose port 9000 for development purpose only.
             - 9000:9000
         volumes:

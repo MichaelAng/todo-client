@@ -1,10 +1,10 @@
-import { TodoClientPage } from './app.po';
+import { TodoPage } from './app.po';
 
-describe('todo-client App', function() {
-  let page: TodoClientPage;
+describe('todo App', () => {
+  let page: TodoPage;
 
   beforeEach(() => {
-    page = new TodoClientPage();
+    page = new TodoPage();
   });
 
   it('should display message saying app works', () => {

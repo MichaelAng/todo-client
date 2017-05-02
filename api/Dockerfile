@@ -23,9 +23,11 @@ RUN npm install --quiet
 # machine
 COPY . $HOME
 
+RUN chmod a+x ./startup.sh
+
 # Exposes the necessary ports for development
 # This is the port the api-server is listening on
 EXPOSE 9000
 
 # Kicks off the default `ng serve` command
-CMD ["node", "main.js"]
+CMD ["./startup.sh]
