@@ -11,21 +11,23 @@ general:
   # Circle ci allows you to save "artifacts" which are basically files you can access after the build finishes.
   # we gonna save our coverage test results
   artifacts:
-    - "coverage"
+    - client/build/karma-coverage
 
 dependencies:
+  cache_directories:
+    - client/node_modules
   override:
     - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-
-compile:
-  override:
-    # Creates a build and tag depending on the branch
-    - ./scripts/circle-docker-build.sh
+    - npm prune && npm install:
+        pwd: client
 
 test:
   override:
     # Runs unit test depending on the branch
-    - ./scripts/circle-run-test.sh
+    - npm run test -- --code-coverage --browsers=PhantomJS --single-run:
+        pwd: client
+    - npm run lint:
+        pwd: client
 
 deployment:
   integration: # pushes a integration image
