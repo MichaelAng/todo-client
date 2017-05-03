@@ -35,10 +35,10 @@ dependencies:
 test:
     override:
         # Runs unit test depending on the branch
-        - npm run test -- --code-coverage --browsers=PhantomJS --single-run:
-            pwd: ./client
-        - npm run lint:
-            pwd: ./client
+        override:
+            - case $CIRCLE_NODE_INDEX in 0) npm run test -- --code-coverage --browsers=PhantomJS --single-run ;; 1) nnpm run lint ;; esac:
+                parallel: true
+                pwd: ./client
 
 deployment:
     integration: # pushes a integration image
