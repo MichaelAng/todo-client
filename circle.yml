@@ -1,69 +1,66 @@
 # This cicle file are instructions for CircleCI to continuously test and validate your application
 
 machine:
-  services:
-    - docker
-  node:
-    version: 7.6.0
-  environment:
-    PROJECT_NAME: todo-165923
-    CLUSTER_NAME: todo-cluster  # This should depend on the build
-    CLOUDSDK_COMPUTE_ZONE: us-east1-c
+    services:
+        - docker
+    node:
+        version: 7.6.0
+    environment:
+        PROJECT_NAME: todo-165923
+        CLUSTER_NAME: todo-cluster  # This should depend on the build
+        CLOUDSDK_COMPUTE_ZONE: us-east1-c
 
-# General settings
 general:
-  # Circle ci allows you to save "artifacts" which are basically files you can access after the build finishes.
-  # we gonna save our coverage test results
-  artifacts:
-    - client/build/karma-coverage
+    # Circle ci allows you to save "artifacts" which are basically files you can access after the build finishes.
+    # we gonna save our coverage test results
+    artifacts:
+        - client/build/karma-coverage
 
 dependencies:
-  cache_directories:
-    - client/node_modules
-  override:
-    - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - npm prune && npm install --quiet:
-      pwd: client
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0 kubectl
-    - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-
-compile:
-  override:
-    - cd client && npm run build -- --prod --output-path="../webserver/dist && cd .."
+    cache_directories:
+        - client/node_modules
+    override:
+        - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+        - npm prune && npm install --quiet:
+            pwd: client
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0 kubectl
+        - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
+        - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+        - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+        - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+        - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
 test:
-  override:
-    # Runs unit test depending on the branch
-    - npm run test -- --code-coverage --browsers=PhantomJS --single-run && mv coverage/ $CIRCLE_ARTIFACTS/:
-      pwd: client
-    - npm run lint:
-      pwd: client
+    override:
+        # Runs unit test depending on the branch
+        - npm run test -- --code-coverage --browsers=PhantomJS --single-run && mv coverage/ $CIRCLE_ARTIFACTS/:
+            pwd: client
+        - npm run lint:
+            pwd: client
 
 deployment:
-  integration: # pushes a integration image
-    branch: develop
-    commands:
-      - ./scripts/circle-docker-deploy.sh
-  staging: # pushes a staging image
-    branch: staging
-    commands:
-      - ./scripts/circle-docker-deploy.sh
-  production: # pushes a production image
-    branch: master
-    commands:
-      - ./scripts/circle-docker-deploy.sh
-  prototype-minikube: # Expirmental: pushes a k8 images
-    branch: prototype-minikube
-      - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
-      - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
-      - docker push angmerica/todo-client:api-develop
-      - docker push angmerica/todo-client:webserver-develop
-      - kubectl rollout history config/api-deployment
-      - kubectl rollout history config/mongo-deployment
-      - kubectl rollout history config/webserverg-deployment
+    integration: # pushes a integration image
+        branch: develop
+        commands:
+           - ./scripts/circle-docker-deploy.sh
+    staging: # pushes a staging image
+        branch: staging
+        commands:
+           - ./scripts/circle-docker-deploy.sh
+    production: # pushes a production image
+        branch: master
+        commands:
+            - ./scripts/circle-docker-deploy.sh
+    prototype-minikube: # Expirmental: pushes a k8 images
+        branch: prototype-minikube
+            - npm run build -- --prod --output-path="../webserver/dist":
+                pwd: client
+            - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
+            - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
+            - docker push angmerica/todo-client:api-develop
+            - docker push angmerica/todo-client:webserver-develop
+            - kubectl rollout history config/api-deployment
+            - kubectl rollout history config/mongo-deployment
+            - kubectl rollout history config/webserverg-deployment
