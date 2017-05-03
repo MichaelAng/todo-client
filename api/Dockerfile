@@ -30,4 +30,4 @@ RUN chmod a+x ./startup.sh
 EXPOSE 9000
 
 # Kicks off the default `ng serve` command
-CMD ["./startup.sh]
+CMD ["./startup.sh"]
