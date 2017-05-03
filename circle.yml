@@ -58,8 +58,10 @@ deployment:
         commands:
             - npm run build -- --prod --output-path="../webserver/dist":
                 pwd: ./client
-            - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
-            - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
+            - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} .:
+                pwd: ./api
+            - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} .:
+                pwd: ./webserver
             - docker push angmerica/todo-client:api-develop
             - docker push angmerica/todo-client:webserver-develop
             - kubectl rollout history config/api-deployment
