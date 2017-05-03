@@ -14,31 +14,31 @@ general:
     # Circle ci allows you to save "artifacts" which are basically files you can access after the build finishes.
     # we gonna save our coverage test results
     artifacts:
-        - client/coverage
+        - ./client/coverage
 
 dependencies:
     cache_directories:
-        - client/node_modules
+        - ./client/node_modules
     override:
         - echo $DOCKER_HUB_EMAIL | docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
         - npm prune && npm install --quiet:
-            pwd: client
-        - sudo opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0
-        - sudo opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0 kubectl
-        - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ${HOME}/gcloud-service-key.json
-        - sudo opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-        - sudo opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-        - sudo opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-        - sudo opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-        - sudo opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+            pwd: ./client
+        - sudo ./opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0
+        - sudo ./opt/google-cloud-sdk/bin/gcloud --quiet components update --version 153.0.0 kubectl
+        - echo $GCLOUD_SERVICE_KEY | base64 --decode -i > ./${HOME}/gcloud-service-key.json
+        - sudo ./opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ./${HOME}/gcloud-service-key.json
+        - sudo ./opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
+        - sudo ./opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
+        - sudo ./opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+        - sudo ./opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
 test:
     override:
         # Runs unit test depending on the branch
         - npm run test -- --code-coverage --browsers=PhantomJS --single-run:
-            pwd: client
+            pwd: ./client
         - npm run lint:
-            pwd: client
+            pwd: ./client
 
 deployment:
     integration: # pushes a integration image
@@ -55,8 +55,9 @@ deployment:
             - ./scripts/circle-docker-deploy.sh
     prototype-minikube: # Expirmental: pushes a k8 images
         branch: prototype-minikube
+        commands:
             - npm run build -- --prod --output-path="../webserver/dist":
-                pwd: client
+                pwd: ./client
             - docker build -t angmerica/todo-client:api-develop-${CIRCLE_SHA1} $HOMEPATH/api/
             - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} $HOMEPATH/webserver/
             - docker push angmerica/todo-client:api-develop
