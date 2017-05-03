@@ -62,8 +62,8 @@ deployment:
                 pwd: ./api
             - docker build -t angmerica/todo-client:webserver-develop-${CIRCLE_SHA1} .:
                 pwd: ./webserver
-            - docker push angmerica/todo-client:api-develop
-            - docker push angmerica/todo-client:webserver-develop
+            - docker push angmerica/todo-client:api-develop-${CIRCLE_SHA1}
+            - docker push angmerica/todo-client:webserver-develop-${CIRCLE_SHA1}
             - kubectl rollout history config/api-deployment
             - kubectl rollout history config/mongo-deployment
             - kubectl rollout history config/webserverg-deployment
