@@ -35,9 +35,12 @@ dependencies:
 test:
     override:
         # Runs unit test depending on the branch
-        - npm run test -- --code-coverage --browsers=PhantomJS --single-run && mv coverage/ $CIRCLE_ARTIFACTS/:
+        - npm run test -- --code-coverage --browsers=PhantomJS --single-run:
             pwd: client
         - npm run lint:
+            pwd: client
+    post:
+        - mv coverage/ $CIRCLE_ARTIFACTS/:
             pwd: client
 
 deployment:
