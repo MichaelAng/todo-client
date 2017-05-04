@@ -64,7 +64,8 @@ deployment:
                 pwd: ./webserver
             - docker push angmerica/todo-client:api-develop-${CIRCLE_SHA1}
             - docker push angmerica/todo-client:webserver-develop-${CIRCLE_SHA1}
+            - envsubst '${CIRCLE_SHA1}' < config/api-deployment.yml > config/api-deployment-update.yml
+            - envsubst '${CIRCLE_SHA1}' < config/webserver-deployment.yml > config/webserver-deployment-update.yml
             - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
-            - kubectl rollout history config/api-deployment
-            - kubectl rollout history config/mongo-deployment
-            - kubectl rollout history config/webserverg-deployment
+            - kubectl apply -f config/api-deployment-update.yml --record
+            - kubectl apply -f config/webserver-deployment-update.yml --record
