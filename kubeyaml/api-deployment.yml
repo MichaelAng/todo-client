@@ -11,6 +11,7 @@ spec:
     spec:
       containers:
       - image: angmerica/todo-client:api-develop-${CIRCLE_SHA1}
+        imagePullPolicy: Always
         name: api
         ports:
         - name: http-server
