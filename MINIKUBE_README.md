@@ -1,10 +1,14 @@
+# Using Minikube
+I assume you already have minikube started
+
 # My startup script process
-0. Make sure you are logged into the correct docker account.
 1. `minikube start --vm-driver=xhyve`
 2. `eval $(minikube docker-env)`
-3. `scripts/startup.sh`
-4. `minikube service webserver`
+3. `docker run -d -p 5000:5000 --restart=always --name registry registry:2`
+4. `scripts/startup-minikube.sh`
+5. `minikube service webserver`
+6. `minikube dashboard`
 
 # My update script process
-1. `./scripts/update.sh v2`
+1. `./scripts/update-minikube.sh v2`
 2. `minikube service webserver`

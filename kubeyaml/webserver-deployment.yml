@@ -10,7 +10,7 @@ spec:
         name: webserver
     spec:
       containers:
-      - image: ${IMAGE_REPO}:${IMAGE_TAG}${CIRCLE_SHA1}
+      - image: ${IMAGE_REPO}${IMAGE_TAG}${CIRCLE_SHA1}
         imagePullPolicy: Always
         name: webserver
         ports:
