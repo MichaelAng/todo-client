@@ -21,10 +21,10 @@ kubectl create --save-config -f kubeyaml/webserver-service.yml
 kubectl create --save-config -f kubeyaml/mongo-deployment.yml
 sleep 15s
 
-CIRCLE_SHA1=$1 envsubst '${CIRCLE_SHA1}' < kubeyaml/api-deployment.yml > kubeyaml/api-deployment-envvar.yml
+IMAGE_REPO=angmerica/todo-client IMAGE_TAG=api-develop- CIRCLE_SHA1=$1; envsubst '${IMAGE_REPO},${IMAGE_TAG},${CIRCLE_SHA1}' < kubeyaml/api-deployment.yml > kubeyaml/api-deployment-envvar.yml
 kubectl create --save-config -f kubeyaml/api-deployment-envvar.yml
 rm kubeyaml/api-deployment-envvar.yml
 
-CIRCLE_SHA1=$1 envsubst '${CIRCLE_SHA1}' < kubeyaml/webserver-deployment.yml > kubeyaml/webserver-deployment-envvar.yml
+IMAGE_REPO=angmerica/todo-client IMAGE_TAG=webserver-develop- CIRCLE_SHA1=$1; envsubst '${IMAGE_REPO},${IMAGE_TAG},${CIRCLE_SHA1}' < kubeyaml/webserver-deployment.yml > kubeyaml/webserver-deployment-envvar.yml
 kubectl create --save-config -f kubeyaml/webserver-deployment-envvar.yml
 rm kubeyaml/webserver-deployment-envvar.yml
