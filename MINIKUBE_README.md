@@ -12,3 +12,8 @@ I assume you already have minikube started
 # My update script process
 1. `./scripts/update-minikube.sh v2`
 2. `minikube service webserver`
+
+# My clean up script
+1. `./scripts/delete.sh`
+2. `docker rm -f registry`
+3. `minikube stop`
