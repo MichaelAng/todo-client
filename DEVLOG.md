@@ -1,17 +1,14 @@
-1.  Created deployments and service
-
 # What did I learn today
 
 - I learned that the mongo connection in the API is trying to connect to the mongo service Not the deployment
 
-
 - I learned the following commands
 
-    kubectl rollout history deployment/api-deployment
-    kubectl rollout undo deployment/api-deployment
+    kubectl rollout history kubeyaml/api-deployment
+    kubectl rollout undo kubeyaml/api-deployment
 
 - I learned that there are three ways to update a deployment
-    * kubectl apply -f deployments/api-deployment.yml --record
+    * kubectl apply -f kubeyaml/api-deployment.yml --record
     * kubectl edit deployment/nginx-deployment
     * kubectl set image deployment/nginx-deployment nginx=nginx:1.9.1
 
@@ -19,22 +16,3 @@
     minikube start --vm-driver=xhyve
     eval $(minikube docker-env)
     minikube stop
-
-
-# My startup script process
-1. `minikube start --vm-driver=xhyve`
-2. `eval $(minikube docker-env)`
-3. Build the docker images
-4. Get the deployment and service up
-
-    `kubectl create -f config/mongo-deployment.yml`
-    `kubectl create -f config/api-deployment.yml`
-    `kubectl create -f config/webserver-deployment.yml`
-
-5. Run `minikube service webserver`
-6. Navigate to `${mini-kube}:***/api/todos`
-
-OR
-1. `minikube start --vm-driver=xhyve`
-2. `eval $(minikube docker-env)`
-3. `scripts/startup.sh`
